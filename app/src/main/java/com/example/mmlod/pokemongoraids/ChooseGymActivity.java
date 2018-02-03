@@ -5,18 +5,37 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class ChooseGymActivity extends AppCompatActivity {
 
+    private static final String TAG = "ChooseGymActivity";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_gym);
+        Log.d(TAG, "onCreate: Started");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        setContentView(R.layout.activity_choose_gym);
+        ListView mListView = (ListView) findViewById(R.id.listView);
+
+        ArrayList<GymAction> gymActions = new ArrayList();
+
+        gymActions.add(new GymAction("Górka Widzewska","17-01-2018", "23-01-2018" ));
+        gymActions.add(new GymAction("Górka Widzewska", "28-01-2018", "02-02-2018"));
+
+        GymActionsAdapter adapter = new GymActionsAdapter(this, R.layout.adapter_view_layout, gymActions);
+        mListView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
