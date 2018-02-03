@@ -26,6 +26,8 @@ class GymActionsAdapter extends ArrayAdapter<GymAction> {
     private Context mContext;
     private int mResource;
     private int lastPosition = -1;
+    private ArrayList<GymAction> allGyms;
+    private ArrayList<GymAction> filteredGyms = null;
 
     static class ViewHolder {
         TextView name;
@@ -45,18 +47,14 @@ class GymActionsAdapter extends ArrayAdapter<GymAction> {
         super(context, resource, objects);
         this.mContext = context;
         this.mResource = resource;
+        filteredGyms = objects;
+        this.allGyms = new ArrayList<GymAction>();
+        this.allGyms.addAll(objects);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-
-        String name = getItem(position).getName();
-        String startDate = getItem(position).getStartDate();
-        String endDate = getItem(position).getEndDate();
-
-        GymAction gymAction = new GymAction(name, startDate, endDate);
 
         final View result;
 
@@ -80,10 +78,24 @@ class GymActionsAdapter extends ArrayAdapter<GymAction> {
         result.startAnimation(animation);
         lastPosition = position;
 
-        holder.name.setText(name);
-        holder.startDate.setText(startDate);
-        holder.endDate.setText(endDate);
+        holder.name.setText(filteredGyms.get(position).getName());
+        holder.startDate.setText(filteredGyms.get(position).getStartDate());
+        holder.endDate.setText(filteredGyms.get(position).getEndDate());
 
         return convertView;
+    }
+
+    public void filter(String text){
+        text = text.toLowerCase();
+        filteredGyms.clear();
+        if(text.length() == 0){
+            filteredGyms.addAll(allGyms);
+        } else {
+            for (GymAction ga : allGyms){
+                if(ga.getName().toLowerCase().contains(text)) filteredGyms.add(ga);
+
+            }
+        }
+        notifyDataSetChanged();
     }
 }

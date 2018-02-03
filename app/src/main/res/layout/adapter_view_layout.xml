@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:weightSum="100">
 
+
     <TextView
         android:gravity="center"
         android:textAlignment="center"
