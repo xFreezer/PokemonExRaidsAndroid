@@ -31,8 +31,19 @@ public class ChooseGymActivity extends AppCompatActivity {
 
         ArrayList<GymAction> gymActions = new ArrayList();
 
-        gymActions.add(new GymAction("Górka Widzewska","17-01-2018", "23-01-2018" ));
-        gymActions.add(new GymAction("Górka Widzewska", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska1","17-01-2018", "23-01-2018" ));
+        gymActions.add(new GymAction("Górka Widzewska2", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska3", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska4", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska5", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska6", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska7", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska8", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska9", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska10", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska11", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska12", "28-01-2018", "02-02-2018"));
+        gymActions.add(new GymAction("Górka Widzewska13", "28-01-2018", "02-02-2018"));
 
         GymActionsAdapter adapter = new GymActionsAdapter(this, R.layout.adapter_view_layout, gymActions);
         mListView.setAdapter(adapter);
