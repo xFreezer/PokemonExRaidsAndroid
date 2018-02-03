@@ -90,12 +90,16 @@ class GymActionsAdapter extends ArrayAdapter<GymAction> {
         filteredGyms.clear();
         if(text.length() == 0){
             filteredGyms.addAll(allGyms);
+        } else if(text.matches("\\d{2}-\\d{2}-\\d{4}")) {
+            for (GymAction ga : allGyms){
+                if(ga.getEndDate().equals(text)) filteredGyms.add(ga);
+            }
         } else {
             for (GymAction ga : allGyms){
                 if(ga.getName().toLowerCase().contains(text)) filteredGyms.add(ga);
-
             }
         }
+
         notifyDataSetChanged();
     }
 }
