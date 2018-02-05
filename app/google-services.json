@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "516009130940",
+    "firebase_url": "https://exraidapp.firebaseio.com",
+    "project_id": "exraidapp",
+    "storage_bucket": "exraidapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516009130940:android:e4a56f75db6d11ed",
+        "android_client_info": {
+          "package_name": "com.example.mmlod.pokemongoraids"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516009130940-qbaqnqsogkcfr9dtjaqqh685pha3ljg1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mmlod.pokemongoraids",
+            "certificate_hash": "a621f186d8820a706ab04417f4d52c1320937b79"
+          }
+        },
+        {
+          "client_id": "516009130940-6ratvl6igpmdu2hk23iafa5dr71744sn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3oOvXbO0pUPzllxVCWU_izY2Pt0u0m3M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516009130940-6ratvl6igpmdu2hk23iafa5dr71744sn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
