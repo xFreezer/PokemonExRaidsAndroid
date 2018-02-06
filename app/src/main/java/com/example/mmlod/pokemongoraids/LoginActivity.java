@@ -70,21 +70,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signUpText.setOnClickListener(this);
         btnSignIn.setOnClickListener(this);
 
-    /*    btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = mEmail.getText().toString();
-                String password = mPassword.getText().toString();
-                if(!email.equals("") && !password.equals("")) signIn(email, password);
-            }
-        });
-
-        signUpText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-            }
-        });*/
     }
 
     @Override
@@ -112,7 +97,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void updateUI(FirebaseUser user){
-         //
+        if(user != null){
+            startActivity(new Intent(this, ChooseGymActivity.class));
+        }
     }
 
     private void signIn(String email, String password){
@@ -124,18 +111,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            loadGymActivity(true);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            loadGymActivity(false);
                         }
 
                         // ...
                     }
                 });
+    }
+
+    private void loadGymActivity(boolean choice){
+        if(choice) startActivity(new Intent(this, ChooseGymActivity.class));
+
     }
 }
 

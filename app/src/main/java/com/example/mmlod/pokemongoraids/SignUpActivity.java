@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private EditText mEmail, mPassword, mReEmail;
     private Button btnSignUp;
     private TextView signInText;
-    private Toast toast;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         mPassword = (EditText) findViewById(R.id.password);
         btnSignUp = (Button) findViewById(R.id.email_sign_up_button);
         signInText = (TextView) findViewById(R.id.sign_in_text);
+        progressBar = (ProgressBar) findViewById(R.id.login_progress);
 
         btnSignUp.setOnClickListener(this);
 
@@ -54,8 +56,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 String password = mPassword.getText().toString();
                 String reEmail = mReEmail.getText().toString();
                 if(!email.equals("") && !password.equals("")) {
-                    if (reEmail.equals(email)) createAccount(email, password);
-                    else Toast.makeText(this, "Emails are not the same", Toast.LENGTH_LONG).show();
+                    if (reEmail.equals(email)) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        createAccount(email, password);
+                    } else Toast.makeText(this, "Emails are not the same", Toast.LENGTH_LONG).show();
                 } else Toast.makeText(this, "Email or Password is empty", Toast.LENGTH_LONG).show();
                 break;
         }
@@ -71,7 +75,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void updateUI(FirebaseUser user){
-        ///
+        if(user != null){
+            startActivity(new Intent(this, ChooseGymActivity.class));
+        }
     }
 
     private void createAccount(String email, String password){
@@ -79,22 +85,28 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            loadFirstInfoActivity(true);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(SignUpActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            loadFirstInfoActivity(false);
                         }
 
                         // ...
                     }
                 });
+    }
+
+    private void loadFirstInfoActivity(boolean choice){
+        if(choice) startActivity(new Intent(this, FirstInfoActivity.class));
+
     }
 
 }

@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SignUpActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -28,9 +28,10 @@
         </activity>
         <!-- <activity android:namSignUpActivityvity"></activity> -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".SignUpActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".FirstInfoActivity"></activity>
+        <activity android:name=".FirstInfoActivity" />
+        <activity android:name=".ChooseGymActivity"></activity>
     </application>
 
 </manifest>
