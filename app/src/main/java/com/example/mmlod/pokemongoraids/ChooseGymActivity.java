@@ -15,39 +15,32 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class ChooseGymActivity extends AppCompatActivity {
     private static final String TAG = "ChooseGymActivity";
     private EditText filter;
-
-
+    private ArrayList<GymAction> gymActions;
+    DatabaseReference databaseGymActions;
+    ListView allGyms;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_gym);
         Log.d(TAG, "onCreate: Started");
-        ListView allGyms = (ListView) findViewById(R.id.listView);
+        allGyms = (ListView) findViewById(R.id.listView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         filter = (EditText) findViewById(R.id.searchFilter);
         setSupportActionBar(toolbar);
 
-        ArrayList<GymAction> gymActions = new ArrayList();
-
-        gymActions.add(new GymAction("Górka Widzewska1","17-01-2018", "23-01-2018" ));
-        gymActions.add(new GymAction("Górka Widzewska2", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Górka Widzewska3", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Górka Widzewska4", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Górka Widzewska5", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Poniatowski", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Górka Widzewska7", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Górka Widzewska8", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Park Struga", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Górka Widzewska10", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Górka Widzewska11", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Górka Widzewska12", "28-01-2018", "02-02-2018"));
-        gymActions.add(new GymAction("Górka Widzewska13", "28-01-2018", "02-02-2018"));
+        databaseGymActions = FirebaseDatabase.getInstance().getReference("GymActions");
+        gymActions = new ArrayList();
 
         final GymActionsAdapter adapter = new GymActionsAdapter(this, R.layout.adapter_view_layout, gymActions);
         allGyms.setAdapter(adapter);
@@ -71,6 +64,26 @@ public class ChooseGymActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        databaseGymActions.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                gymActions.clear();
+                for(DataSnapshot gymActionsDataSnapshot : dataSnapshot.getChildren()){
+                    GymAction ga = gymActionsDataSnapshot.getValue(GymAction.class);
+                    gymActions.add(ga);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -78,10 +91,13 @@ public class ChooseGymActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*switch (item.getItemId()){
+        switch (item.getItemId()){
             case  R.id.action_search:
-             //   if(filter.getVisibility() == View.VISIBLE)   filter.setVisibility(View.GONE);
-              //  else filter.setVisibility(View.VISIBLE);
+                if(filter.getVisibility() == View.VISIBLE)   {
+                    filter.setVisibility(View.GONE);
+                    filter.setText("");
+                }
+                else filter.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.action_log_out:
@@ -90,12 +106,10 @@ public class ChooseGymActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_add:
+                startActivity(new Intent(this, AddGymActionActivity.class));
                 break;
-        }*/
-        if(item.getItemId() == R.id.action_log_out){
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, LoginActivity.class));
         }
+
         return true;
     }
 }
