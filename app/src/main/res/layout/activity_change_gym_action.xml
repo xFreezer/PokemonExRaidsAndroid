@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.mmlod.pokemongoraids.AddGymActionActivity"
+    >
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/gym_name_change"
+        android:hint="Gym"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/gym_name_change"
+        android:id="@+id/start_date_change"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:hint="Start date "/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/start_date_change"
+        android:id="@+id/end_date_change"
+        android:layout_centerVertical="true"
+        android:textSize="20sp"
+        android:hint="End date "/>
+
+    <Button
+        android:id="@+id/save_change_gym_action_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/end_date_change"
+        android:text="Save"
+        android:gravity="center"
+        />
+
+</RelativeLayout>

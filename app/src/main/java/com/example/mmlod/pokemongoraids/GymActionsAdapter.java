@@ -102,4 +102,8 @@ class GymActionsAdapter extends ArrayAdapter<GymAction> {
 
         notifyDataSetChanged();
     }
+
+    public ArrayList<GymAction> getFilteredGyms() {
+        return filteredGyms;
+    }
 }

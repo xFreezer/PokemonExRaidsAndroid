@@ -6,14 +6,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,41 +18,44 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
+public class ChangeGymActionActivity extends AppCompatActivity {
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
-public class AddGymActionActivity extends AppCompatActivity {
-
-    private static final String TAG = "AddGymActionActivity";
-
-    private EditText gymName;
+    private static final String TAG = "ChangeGymActionActivity";
+    private EditText name;
     private TextView startDate, endDate;
-    private Button save;
+    private Button changeSave;
+    private DatabaseReference databaseGymActions;
+    private GymAction gymActionToChange, gymActionChanged;
     private DatePickerDialog.OnDateSetListener sDateSetListener, eDateSetListener;
     private int sDay, sMonth, sYear, eDay, eMonth, eYear;
-    private DatabaseReference database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_gym_action);
-        gymName = (EditText) findViewById(R.id.gym);
-        startDate = (TextView) findViewById(R.id.start_date);
-        endDate = (TextView) findViewById(R.id.end_date);
-        save = (Button) findViewById(R.id.save_gym_action_button);
-        Calendar cal = Calendar.getInstance();
-        sYear = cal.get(Calendar.YEAR);
-        sMonth = cal.get(Calendar.MONTH);
-        sDay = cal.get(Calendar.DAY_OF_MONTH);
-        database = FirebaseDatabase.getInstance().getReference("GymActions");
+        setContentView(R.layout.activity_change_gym_action);
+
+        Intent incomingIntent = getIntent();
+        initializeFieldsAndButtons();
+
+
+
+        databaseGymActions = FirebaseDatabase.getInstance().getReference("GymActions");
+        gymActionToChange = new GymAction(incomingIntent.getStringExtra("id"), incomingIntent.getStringExtra("name"), incomingIntent.getStringExtra("startDate"), incomingIntent.getStringExtra("endDate"), incomingIntent.getStringArrayListExtra("raidsId"));
+        gymActionChanged = gymActionToChange;
+
+        setDates();
+
+
+        name.setText(gymActionToChange.getName());
+        startDate.setText(gymActionToChange.getStartDate());
+        endDate.setText(gymActionToChange.getEndDate());
+
 
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                DatePickerDialog dialog = new DatePickerDialog(AddGymActionActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, sDateSetListener, sYear, sMonth, sDay);
+                DatePickerDialog dialog = new DatePickerDialog(ChangeGymActionActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, sDateSetListener, sDay, sMonth, sDay);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
 
@@ -89,7 +89,7 @@ public class AddGymActionActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                DatePickerDialog dialog = new DatePickerDialog(AddGymActionActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, eDateSetListener, eYear, eMonth, eDay);
+                DatePickerDialog dialog = new DatePickerDialog(ChangeGymActionActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, eDateSetListener, eYear, eMonth, eDay);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
 
@@ -109,24 +109,35 @@ public class AddGymActionActivity extends AppCompatActivity {
             }
         };
 
-        save.setOnClickListener(new View.OnClickListener() {
+
+
+        changeSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(saveGymAction()) {
-                    startActivity(new Intent(AddGymActionActivity.this, ChooseGymActivity.class));
-                } else Toast.makeText(AddGymActionActivity.this, "Gym name, start date and end date cannot be empty", Toast.LENGTH_LONG).show();
+                gymActionChanged.setName(name.getText().toString());
+                gymActionChanged.setStartDate(startDate.getText().toString());
+                gymActionChanged.setEndDate(endDate.getText().toString());
+                databaseGymActions.child(gymActionChanged.getId()).setValue(gymActionToChange);
+                startActivity(new Intent(ChangeGymActionActivity.this,ChooseGymActivity.class));
             }
         });
+
     }
 
-    private boolean saveGymAction(){
-        if(gymName.getText().toString().equals("") || startDate.getText().equals("") || endDate.getText().equals("")) return false;
-        else {
-            String id = database.push().getKey();
-            GymAction ga = new GymAction(id, gymName.getText().toString(), startDate.getText().toString(), endDate.getText().toString(), new ArrayList<String>());
-            database.child(id).setValue(ga);
-            return true;
-        }
+    private void setDates(){
+        sDay = Integer.parseInt(gymActionChanged.getStartDate().split("-")[0]);
+        sMonth = Integer.parseInt(gymActionChanged.getStartDate().split("-")[1]) - 1;
+        sYear = Integer.parseInt(gymActionChanged.getStartDate().split("-")[2]);
+
+        eDay = Integer.parseInt(gymActionChanged.getEndDate().split("-")[0]);
+        eMonth = Integer.parseInt(gymActionChanged.getEndDate().split("-")[1]) - 1;
+        eYear = Integer.parseInt(gymActionChanged.getEndDate().split("-")[2]);
+    }
+
+    private void initializeFieldsAndButtons(){
+        name = (EditText) findViewById(R.id.gym_name_change);
+        startDate = findViewById(R.id.start_date_change);
+        endDate = findViewById(R.id.end_date_change);
+        changeSave = findViewById(R.id.save_change_gym_action_button);
     }
 }

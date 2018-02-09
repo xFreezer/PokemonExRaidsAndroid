@@ -32,7 +32,8 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".FirstInfoActivity" />
         <activity android:name=".ChooseGymActivity" />
-        <activity android:name=".AddGymActionActivity"></activity>
+        <activity android:name=".AddGymActionActivity" />
+        <activity android:name=".ChangeGymActionActivity"></activity>
     </application>
 
 </manifest>

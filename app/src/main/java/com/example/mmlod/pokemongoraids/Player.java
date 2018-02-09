@@ -9,18 +9,20 @@ public class Player {
     private String username;
     private String team;
     private int lvl;
-    private String perrmision;
+    private String permission;
+    private String userId;
 
     public Player() {
 
     }
 
-    public Player(String id, String username, String team, int lvl, String perrmision) {
+    public Player(String id, String userId, String username, String team, int lvl, String permission) {
         this.id = id;
+        this.userId = userId;
         this.username = username;
         this.team = team;
         this.lvl = lvl;
-        this.perrmision = perrmision;
+        this.permission = permission;
     }
 
     public String getId() {
@@ -55,11 +57,19 @@ public class Player {
         this.lvl = lvl;
     }
 
-    public String getPerrmision() {
-        return perrmision;
+    public String getPermission() {
+        return permission;
     }
 
-    public void setPerrmision(String perrmision) {
-        this.perrmision = perrmision;
+    public void setPermission(String permission) {
+        this.permission = permission;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
